@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:meal_app/providers/mealprovider.dart';
+import 'package:provider/provider.dart';
 import '../dummy_data.dart';
 class MealDetailScreen extends StatelessWidget {
-  final Function toggleFavorite;
-  final Function isMealFavorite;
-  static const routeName='MealDetailScreen';
 
-   MealDetailScreen(this.toggleFavorite,this.isMealFavorite);
+  static const routeName='MealDetailScreen';
   Widget buildTitle(BuildContext ctx,String text){
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
-      child: Text(text,style: Theme.of(ctx).textTheme.title,),
+      child: Text(text,style: Theme.of(ctx).textTheme.headline6,),
     );
   }
   Widget buildContainer(Widget child){
@@ -28,11 +27,12 @@ class MealDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mealId=ModalRoute.of(context).settings.arguments as String;
+    var accentColor= Theme.of(context).accentColor;
+    final mealId=ModalRoute.of(context)!.settings.arguments as String;
     final selectedMeal=DUMMY_MEALS.firstWhere((meal) => mealId==meal.id);
     return Scaffold(
       appBar: AppBar(
-        title: Text(selectedMeal.title),
+        title: Text(selectedMeal.title!),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -40,19 +40,21 @@ class MealDetailScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               height: 300,
-              child: Image.network(selectedMeal.imageUrl,
+              child: Image.network(selectedMeal.imageUrl!,
                 fit: BoxFit.cover,),
             ),
             buildTitle(context,'ingredients'),
             buildContainer(ListView.builder(
               itemBuilder: (context,index)=>Card(
-                  color: Theme.of(context).accentColor,
+                  color:accentColor,
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-                    child: Text(selectedMeal.ingredients[index]),
+                    child: Text(selectedMeal.ingredients![index],
+                      style:TextStyle(color:Colors.black) ,
+                    ),
                   )
               ),
-              itemCount: selectedMeal.ingredients.length,),),
+              itemCount: selectedMeal.ingredients!.length,),),
             buildTitle(context,'steps'),
             buildContainer(ListView.builder(
               itemBuilder: (context,index)=>Column(
@@ -61,20 +63,21 @@ class MealDetailScreen extends StatelessWidget {
                     leading: CircleAvatar(
                       child: Text('# ${index+1}'),
                     ),
-                    title:Text(selectedMeal.steps[index]) ,
+                    title:Text(selectedMeal.steps![index],
+                    style: TextStyle(color: Colors.black),) ,
                   ),
                   Divider(),
                 ],
               ),
 
-              itemCount: selectedMeal.steps.length,),),
+              itemCount: selectedMeal.steps!.length,),),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=>toggleFavorite(mealId),
+        onPressed: ()=>Provider.of<MealProvider>(context,listen: false).toggleFavorite(mealId),
         child: Icon(
-          isMealFavorite(mealId)?Icons.star:Icons.star_border,
+          Provider.of<MealProvider>(context,).isMealFavorite(mealId)?Icons.star:Icons.star_border,
         ),
       ),
     );

@@ -6,7 +6,7 @@ class CategoryItem extends StatelessWidget {
   final String title;
   final Color color;
 
-  CategoryItem({@required this.id, @required this.title, @required this.color});
+  CategoryItem({ required this.id,required  this.title,required  this.color});
 
   void onSelect(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(CategoryMealsScreen.routeName, arguments: {
@@ -25,7 +25,7 @@ class CategoryItem extends StatelessWidget {
         padding: EdgeInsets.all(20.0),
         child: Text(
           title,
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(

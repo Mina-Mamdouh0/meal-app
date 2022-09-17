@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:meal_app/providers/mealprovider.dart';
+import 'package:meal_app/providers/themeprovider.dart';
+import 'package:provider/provider.dart';
 import '../models/meal.dart';
 import '../widget/my_drawer.dart';
 import './category_screen.dart';
@@ -6,25 +9,27 @@ import './favorites_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   static const routeName = 'TabsScreen';
-  final  List<Meal>favoriteMeal;
 
-  TabsScreen(this.favoriteMeal);
+
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  List<Map<String, Object>> _page;
+   List<Map<String, dynamic>> _page = [
+    {'page': CategoryScreen(), 'title': 'Category'},
+    {'page': FavoritesScreen(), 'title': 'Favorite'}
+  ];
   @override
-
-  void initState(){
+  void initState() {
     super.initState();
-    _page = [
-      {'page': CategoryScreen(), 'title': 'Category'},
-      {'page': FavoritesScreen(widget.favoriteMeal), 'title': 'Favorite'}
-    ];
+    Provider.of<MealProvider>(context,listen: false).getDate();
+    Provider.of<ThemeProvider>(context,listen: false).getThemeMode();
+    Provider.of<ThemeProvider>(context,listen: false).getColor();
+
   }
+
   int _selectItem = 0;
   void onTapItem(int val) {
     setState(() {
@@ -45,9 +50,9 @@ class _TabsScreenState extends State<TabsScreen> {
         currentIndex: _selectItem,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.category), title: Text('category')),
+              icon: Icon(Icons.category), label: 'category'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.star), title: Text('Favorite')),
+              icon: Icon(Icons.star), label: 'Favorite'),
         ],
       ),
     );

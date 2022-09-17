@@ -11,12 +11,12 @@ class MealItem extends StatelessWidget {
   final Complexity complexity;
 
   const MealItem({
-    @required this.id,
-    @required this.imageUrl,
-    @required this.title,
-    @required this.duration,
-    @required this.affordability,
-    @required this.complexity,
+     required this.id,
+    required this.imageUrl,
+    required this.title,
+    required this.duration,
+    required this.affordability,
+    required this.complexity,
   });
 
   String get complex {
@@ -111,7 +111,7 @@ class MealItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.access_alarm),
+                      Icon(Icons.access_alarm,color:Theme.of(context).buttonColor),
                       SizedBox(
                         width: 10,
                       ),
@@ -120,7 +120,7 @@ class MealItem extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.work),
+                      Icon(Icons.work,color:Theme.of(context).buttonColor),
                       SizedBox(
                         width: 10,
                       ),
@@ -129,7 +129,7 @@ class MealItem extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.attach_money),
+                      Icon(Icons.attach_money,color:Theme.of(context).buttonColor),
                       SizedBox(
                         width: 10,
                       ),
